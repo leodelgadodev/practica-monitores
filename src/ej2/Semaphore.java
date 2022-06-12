@@ -1,22 +1,22 @@
 package ej2;
 
 public class Semaphore {
-    private int semaphore;
+    private int permission;
 
     public Semaphore(int semaphore) {
-        this.semaphore = semaphore;
+        this.permission = semaphore;
     }
 
     public synchronized void acquire() throws InterruptedException {
-        while (semaphore == 0) {
+        while (permission == 0) {
             wait();
         }
 
-        semaphore--;
+        permission--;
     }
 
     public synchronized void release() {
-        semaphore++;
+        permission++;
         notify();
     }
 }

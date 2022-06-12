@@ -13,7 +13,8 @@ public class Barrier {
 
         if (size == 0) {
             notifyAll();
-        } else {
+        } else if (size > 0) { // prevents more await calls to barrier than
+            // its size from generating accidental deadlocks
             wait();
         }
     }
