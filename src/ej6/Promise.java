@@ -16,6 +16,15 @@ public class Promise implements Future {
     // assigns get result
     public synchronized void set(int result) {
         this.result = result;
-        notify();
+        notifyAll();
     }
+
+//    public Future async(callback, x) {
+//        Promise p = new Promise();
+//        thread {
+//            res = callback(x);
+//            p.set(res);
+//        }
+//        return p;
+//    }
 }

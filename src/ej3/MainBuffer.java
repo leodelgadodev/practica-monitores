@@ -1,6 +1,6 @@
 package ej3;
 
-public class BufferLoader {
+public class MainBuffer {
     private static Buffer buffer;
 
     public static void start() {
