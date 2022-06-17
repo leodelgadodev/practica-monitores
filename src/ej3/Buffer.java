@@ -1,21 +1,42 @@
 package ej3;
 
 public class Buffer {
-    private int[] buffer;
+    private final Object[] buffer;
     private int begin;
     private int end;
-    private int size;
 
     public Buffer(int size) {
-        this.size = size;
+        this.buffer = new Object[size+1];
     }
 
-    public synchronized void fill(int element) {
-
+    public synchronized Object read() throws InterruptedException {
+        while (isEmpty()) {
+                wait();
+        }
+        Object element = buffer[end];
+        end = next(end);
+        notifyAll();
+        return element;
+    }
+    public synchronized void write(Object o) throws InterruptedException {
+        while (isFull()) {
+                wait();
+        }
+        buffer[begin] = o;
+        begin = next(begin);
+        notifyAll();
     }
 
-    public synchronized int empty() {
-        return 666;
+    private boolean isEmpty() {
+        return begin == end;
+    }
+
+    private boolean isFull() {
+        return next(begin) == end;
+    }
+
+    private int next(int i) {
+        return (i+1) % buffer.length;
     }
 
 }
