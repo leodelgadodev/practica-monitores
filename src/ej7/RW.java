@@ -6,9 +6,10 @@ public class RW {
     Serializable serial;
     private int readers = 0;
     private int writers = 0;
+    private int awaitingWriters = 0;
 
     public synchronized void beginRead() throws InterruptedException {
-        while(writers > 0) {
+        while(writers > 0 || awaitingWriters > 0) {
             wait();
         }
 
@@ -21,9 +22,11 @@ public class RW {
     }
 
     public synchronized void beginWrite() throws InterruptedException {
-        while (readers != 0) {
+        this.awaitingWriters++;
+        while (readers != 0 && writers != 0) {
             wait();
         }
+        this.awaitingWriters--;
         this.writers++;
     }
 
